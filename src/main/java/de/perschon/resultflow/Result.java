@@ -16,6 +16,30 @@
 
 package de.perschon.resultflow;
 
+/**
+ * The Result type is an alternative way of chaining together functions in a
+ * functional programming style while hiding away error handling structures such as
+ * try-catch-blocks and conditionals.<br/>
+ * 
+ * Instead of adding a throws declaration to a function, the return type of the function
+ * is instead set to Result<V, E> where V is the original return type, i.e. the
+ * "happy case" and E is the error type, usually the Exception type or a String
+ * if an error explanation is sufficient.<br/><br/>
+ * 
+ * Example:
+ * <pre>
+ * public Result<Float, String> divide(int a, int b) {
+ *     if (b == 0) {
+ *         return Result.err("Can't divide by zero!");
+ *     } else {
+ *         return Result.ok(a / b);
+ *     }
+ * }
+ * </pre>
+ *   
+ * @param <V> The value type of the Result.
+ * @param <E> The error type of the Result.
+ */
 public interface Result<V, E> {
 	
 	public abstract V getValue();
