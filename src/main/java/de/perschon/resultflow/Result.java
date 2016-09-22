@@ -20,6 +20,8 @@ public interface Result<V, E> {
 	
 	public abstract V getValue();
 	public abstract E getError();
+	public abstract boolean isOk();
+	public abstract boolean isErr();
 	
 	public static <V, E> Result<V, E> ok(final V value) {
 		return new Ok<V, E>(value);
@@ -46,6 +48,16 @@ public interface Result<V, E> {
 		}
 		
 		@Override
+		public boolean isOk() {
+			return true;
+		}
+
+		@Override
+		public boolean isErr() {
+			return false;
+		}
+		
+		@Override
 		public String toString() {
 			return String.format("Ok(%s)", value);
 		}
@@ -65,6 +77,16 @@ public interface Result<V, E> {
 
 		public E getError() {
 			return error;
+		}
+		
+		@Override
+		public boolean isOk() {
+			return false;
+		}
+
+		@Override
+		public boolean isErr() {
+			return true;
 		}
 		
 		@Override
