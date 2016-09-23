@@ -90,7 +90,7 @@ public interface Result<V, E> {
 	public static class Err<V, E> implements Result<V, E> {
 		private final E error;
 		
-		public Err(final E error) {
+		private Err(final E error) {
 			super();
 			this.error = error;
 		}
