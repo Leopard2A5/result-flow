@@ -21,34 +21,60 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import org.junit.Test;
 
-public class ConstructorTest {
+public class BaseFunctionsTest {
 
+	private final Result<String, Object> ok = Result.ok("foo");
+	private final Result<Object, String> err = Result.err("bar");
+	
 	@Test
 	public void okShouldReturnAnOk() {
-		final Result<String, Object> ok = Result.ok("foo");
-		
 		assertThat(ok).isExactlyInstanceOf(Result.Ok.class);
-		
+	}
+	
+	@Test
+	public void okShouldIdentifyAsOk() {
 		assertThat(ok.isOk()).isTrue();
+	}
+	
+	@Test
+	public void okShouldNotIdentifyAsErr() {
 		assertThat(ok.isErr()).isFalse();
-		
+	}
+	
+	@Test
+	public void okShouldReturnItsValue() {
 		assertThat(ok.getValue()).isEqualTo("foo");
+	}
+	
+	@Test
+	public void okShouldThrowExceptionOnGetError() {
 		assertThatExceptionOfType(RuntimeException.class)
 			.isThrownBy(() -> ok.getError());
 	}
 	
 	@Test
 	public void errShouldReturnAnOk() {
-		final Result<Object, String> err = Result.err("bar");
-		
 		assertThat(err).isExactlyInstanceOf(Result.Err.class);
-		
-		assertThat(err.isOk()).isFalse();
+	}
+	
+	@Test
+	public void errShouldIdentifyAsErr() {
 		assertThat(err.isErr()).isTrue();
-		
-		assertThat(err.getError()).isEqualTo("bar");
+	}
+	
+	@Test
+	public void errShouldNotIdentifyAsOk() {
+		assertThat(err.isOk()).isFalse();
+	}
+	
+	@Test
+	public void errShouldThrowExceptionOnGetValue() {
 		assertThatExceptionOfType(RuntimeException.class)
 			.isThrownBy(() -> err.getValue());
 	}
-
+	
+	@Test
+	public void errShouldReturnItsError() {
+		assertThat(err.getError()).isEqualTo("bar");
+	}
 }
