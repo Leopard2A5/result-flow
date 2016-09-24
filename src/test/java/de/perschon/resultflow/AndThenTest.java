@@ -39,7 +39,7 @@ public class AndThenTest {
 	}
 	
 	@Test
-	public void andThenShouldReturnThisWhenItsAndErr() {
+	public void andThenShouldReturnThisWhenItsAnErr() {
 		final Result<Object, String> result = err.andThen(v -> Result.err("foo"));
 		assertThat(result).isSameAs(err);
 	}
