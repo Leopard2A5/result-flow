@@ -111,6 +111,24 @@ public interface Result<V, E> {
 	}
 	
 	/**
+	 * If this is an Ok value, map() returns the result of the given {@link Function}, wrapped
+	 * in a new Ok Result instance. Otherwise returns this.
+	 * 
+	 * @param lambda The {@link Function} to call with the value of this.
+	 * @param <U> The new value type.
+	 * @return see above.
+	 */
+	public default <U> Result<U, E> map(final Function<V, U> lambda) {
+		if (isOk()) {
+			return Result.ok(lambda.apply(getValue()));
+		}
+		
+		@SuppressWarnings("unchecked")
+		final Result<U, E> ret = (Result<U, E>) this;
+		return ret;
+	}
+	
+	/**
 	 * This class represents the Ok side of @{link Result}.
 	 * 
 	 * @param <V> The value type
