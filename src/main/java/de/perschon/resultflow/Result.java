@@ -44,15 +44,50 @@ import java.util.function.Function;
  */
 public interface Result<V, E> {
 	
+	/**
+	 * Returns the value of this Ok instance. If it's an Err instance, this method throws an Exception.
+	 * @return see above.
+	 */
 	public abstract V getValue();
+	
+	/**
+	 * Returns the error value of this Err instance. If it's an Ok instance, this method throws an Exception.
+	 * @return see above.
+	 */
 	public abstract E getError();
+	
+	/**
+	 * Returns <code>true</code> if this instance represents an Ok value, false otherwise.
+	 * @return see above.
+	 */
 	public abstract boolean isOk();
+	
+	/**
+	 * Returns <code>true</code> if this instance represents an Err value, false otherwise.
+	 * @return see above
+	 */
 	public abstract boolean isErr();
 	
+	/**
+	 * Returns a new Ok instance containing the given value.
+	 * 
+	 * @param value the value
+	 * @param <V> The type of the value
+	 * @param <E> The type of the error
+	 * @return see above
+	 */
 	public static <V, E> Result<V, E> ok(final V value) {
 		return new Ok<V, E>(value);
 	}
 	
+	/**
+	 * Returns a new Err instance containing the given error.
+	 * 
+	 * @param error the error
+	 * @param <V> The type of the value
+	 * @param <E> The type of the error
+	 * @return see above
+	 */
 	public static <V, E> Result<V, E> err(final E error) {
 		return new Err<V, E>(error);
 	}
@@ -74,19 +109,30 @@ public interface Result<V, E> {
 		return ret;
 	}
 	
-	
+	/**
+	 * This class represents the Ok side of @{link Result}.
+	 * 
+	 * @param <V> The value type
+	 * @param <E> The error type
+	 */
 	public static class Ok<V, E> implements Result<V, E> {
 		private final V value;
 		
+		/**
+		 * Constructor.
+		 * @param value the value
+		 */
 		private Ok(final V value) {
 			super();
 			this.value = value;
 		}
 
+		@Override
 		public V getValue() {
 			return value;
 		}
 
+		@Override
 		public E getError() {
 			throw new RuntimeException("Can't call getError() on Ok instances!");
 		}
@@ -107,18 +153,30 @@ public interface Result<V, E> {
 		}
 	}
 	
+	/**
+	 * This class represents theErr side of @{link Result}.
+	 * 
+	 * @param <V> The value type
+	 * @param <E> The error type
+	 */
 	public static class Err<V, E> implements Result<V, E> {
 		private final E error;
 		
+		/**
+		 * Constructor.
+		 * @param error the error
+		 */
 		private Err(final E error) {
 			super();
 			this.error = error;
 		}
 		
+		@Override
 		public V getValue() {
 			throw new RuntimeException("Can't call getValue() on Err instances!");
 		}
 
+		@Override
 		public E getError() {
 			return error;
 		}
