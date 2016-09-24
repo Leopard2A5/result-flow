@@ -130,6 +130,24 @@ public interface Result<V, E> {
 				return ret;
 			});
 	}
+
+	/**
+	 * If this is an Err value, mapErr() returns the result of the given @{link Function}, wrapped
+	 * in a new Err Result instance. Otherwise returns this.
+	 *
+	 * @param lambda The {@link Function} to call with the error of this.
+	 * @param <F>  The new error type.
+     * @return see above
+     */
+	public default <F> Result<V, F> mapErr(final Function<E, F> lambda) {
+		return getError()
+			.map(e -> Result.<V, F>err(lambda.apply(e)))
+			.orElseGet(() -> {
+				@SuppressWarnings("unchecked")
+				final Result<V, F> ret = (Result<V, F>) this;
+				return ret;
+			});
+	}
 	
 	/**
 	 * This class represents the Ok side of @{link Result}.
