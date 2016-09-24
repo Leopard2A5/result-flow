@@ -28,7 +28,7 @@ public class AndThenTest {
 	@Test
 	public void andThenShouldCallLambda() {
 		final Result<Integer, String> result = five.andThen(this::stringToInt);
-		assertThat(result.getValue()).isEqualTo(5);
+		assertThat(result.getValue().get()).isEqualTo(5);
 	}
 	
 	@Test

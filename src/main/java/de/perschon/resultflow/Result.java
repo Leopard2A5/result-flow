@@ -16,6 +16,7 @@
 
 package de.perschon.resultflow;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -45,16 +46,18 @@ import java.util.function.Function;
 public interface Result<V, E> {
 	
 	/**
-	 * Returns the value of this Ok instance. If it's an Err instance, this method throws an Exception.
+	 * Returns the value of this instance as an {@link Optional}. Returns Optional.empty()
+	 * if this is an Err instance.
 	 * @return see above.
 	 */
-	public abstract V getValue();
+	public abstract Optional<V> getValue();
 	
 	/**
-	 * Returns the error value of this Err instance. If it's an Ok instance, this method throws an Exception.
+	 * Returns the error of this instance as an {@link Optional}. Returns Optional.empty()
+	 * if this is an Ok instance.
 	 * @return see above.
 	 */
-	public abstract E getError();
+	public abstract Optional<E> getError();
 	
 	/**
 	 * Returns <code>true</code> if this instance represents an Ok value, false otherwise.
@@ -101,13 +104,13 @@ public interface Result<V, E> {
 	 * @return see above.
 	 */
 	public default <U> Result<U, E> andThen(final Function<V, Result<U, E>> lambda) {
-		if (isOk()) {
-			return lambda.apply(getValue());
-		}
-		
-		@SuppressWarnings("unchecked")
-		final Result<U, E> ret = (Result<U, E>) this;
-		return ret;
+		return getValue()
+			.map(lambda::apply)
+			.orElseGet(() -> {
+				@SuppressWarnings("unchecked")
+				final Result<U, E> ret = (Result<U, E>) this;
+				return ret;
+			});
 	}
 	
 	/**
@@ -119,13 +122,13 @@ public interface Result<V, E> {
 	 * @return see above.
 	 */
 	public default <U> Result<U, E> map(final Function<V, U> lambda) {
-		if (isOk()) {
-			return Result.ok(lambda.apply(getValue()));
-		}
-		
-		@SuppressWarnings("unchecked")
-		final Result<U, E> ret = (Result<U, E>) this;
-		return ret;
+		return getValue()
+			.map(v -> Result.<U, E>ok(lambda.apply(v)))
+			.orElseGet(() -> {
+				@SuppressWarnings("unchecked")
+				final Result<U, E> ret = (Result<U, E>) this;
+				return ret;
+			});
 	}
 	
 	/**
@@ -147,13 +150,13 @@ public interface Result<V, E> {
 		}
 
 		@Override
-		public V getValue() {
-			return value;
+		public Optional<V> getValue() {
+			return Optional.of(value);
 		}
 
 		@Override
-		public E getError() {
-			throw new RuntimeException("Can't call getError() on Ok instances!");
+		public Optional<E> getError() {
+			return Optional.empty();
 		}
 		
 		@Override
@@ -191,13 +194,13 @@ public interface Result<V, E> {
 		}
 		
 		@Override
-		public V getValue() {
-			throw new RuntimeException("Can't call getValue() on Err instances!");
+		public Optional<V> getValue() {
+			return Optional.empty();
 		}
 
 		@Override
-		public E getError() {
-			return error;
+		public Optional<E> getError() {
+			return Optional.of(error);
 		}
 		
 		@Override

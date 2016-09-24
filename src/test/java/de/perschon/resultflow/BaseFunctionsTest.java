@@ -19,6 +19,8 @@ package de.perschon.resultflow;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import java.util.Optional;
+
 import org.junit.Test;
 
 public class BaseFunctionsTest {
@@ -43,13 +45,12 @@ public class BaseFunctionsTest {
 	
 	@Test
 	public void okShouldReturnItsValue() {
-		assertThat(ok.getValue()).isEqualTo("foo");
+		assertThat(ok.getValue().get()).isEqualTo("foo");
 	}
 	
 	@Test
-	public void okShouldThrowExceptionOnGetError() {
-		assertThatExceptionOfType(RuntimeException.class)
-			.isThrownBy(() -> ok.getError());
+	public void okShouldReturnEmptyOnGetError() {
+		assertThat(ok.getError()).isEqualTo(Optional.empty());
 	}
 	
 	@Test
@@ -68,13 +69,12 @@ public class BaseFunctionsTest {
 	}
 	
 	@Test
-	public void errShouldThrowExceptionOnGetValue() {
-		assertThatExceptionOfType(RuntimeException.class)
-			.isThrownBy(() -> err.getValue());
+	public void errShouldReturnEmptyOnGetValue() {
+		assertThat(err.getValue()).isEqualTo(Optional.empty());
 	}
 	
 	@Test
 	public void errShouldReturnItsError() {
-		assertThat(err.getError()).isEqualTo("bar");
+		assertThat(err.getError().get()).isEqualTo("bar");
 	}
 }

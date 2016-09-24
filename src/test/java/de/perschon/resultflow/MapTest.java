@@ -28,7 +28,7 @@ public class MapTest {
 	@Test
 	public void mapShouldCallLambda() {
 		final Result<String, String> result = five.map(this::intToString);
-		assertThat(result.getValue()).isEqualTo("5");
+		assertThat(result.getValue().get()).isEqualTo("5");
 	}
 	
 	@Test
