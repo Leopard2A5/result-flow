@@ -24,16 +24,11 @@ public class AndThenTest {
 
 	private final Result<String, String> five = Result.ok("5");
 	private final Result<String, String> err = Result.err("error");
-	private int target;
 	
 	@Test
 	public void andThenShouldCallLambda() {
-		assertThat(five.getValue()).isEqualTo("5");
-		assertThat(target).isNotEqualTo(5);
-		
-		five.andThen(v -> target = Integer.valueOf(v));
-		assertThat(target).isEqualTo(5);
-		assertThat(five.getValue()).isEqualTo("5");
+		final Result<Integer, String> result = five.andThen(this::stringToInt);
+		assertThat(result.getValue()).isEqualTo(5);
 	}
 	
 	@Test
@@ -44,10 +39,16 @@ public class AndThenTest {
 	}
 	
 	@Test
-	public void andThenShouldReturnThis() {
-		Object ret = null;
-		ret = five.andThen(v -> {});
-		assertThat(ret).isSameAs(five);
+	public void andThenShouldReturnThisWhenItsAndErr() {
+		final Result<Object, String> result = err.andThen(v -> Result.err("foo"));
+		assertThat(result).isSameAs(err);
 	}
 
+	private Result<Integer, String> stringToInt(final String input) {
+		try {
+			return Result.ok(Integer.valueOf(input));
+		} catch (final NumberFormatException e) {
+			return Result.err(e.getMessage());
+		}
+	}
 }

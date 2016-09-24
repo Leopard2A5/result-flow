@@ -16,7 +16,7 @@
 
 package de.perschon.resultflow;
 
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * The Result type is an alternative way of chaining together functions in a
@@ -58,17 +58,20 @@ public interface Result<V, E> {
 	}
 	
 	/**
-	 * Calls the given {@link Consumer} with the contained value, if this is an Ok. If
-	 * this is an Err, the lambda is not called. In both cases andThen returns this.
+	 * If this is an Ok value, andThen() returns the result of the given {@link Function}.
+	 * Otherwise returns this.
 	 * 
-	 * @param lambda the {@link Consumer} to call.
-	 * @return this
+	 * @param lambda The {@link Function} to be called with the value of this.
+	 * @return see above.
 	 */
-	public default Result<V, E> andThen(final Consumer<V> lambda) {
+	public default <U> Result<U, E> andThen(final Function<V, Result<U, E>> lambda) {
 		if (isOk()) {
-			lambda.accept(getValue());
+			return lambda.apply(getValue());
 		}
-		return this;
+		
+		@SuppressWarnings("unchecked")
+		final Result<U, E> ret = (Result<U, E>) this;
+		return ret;
 	}
 	
 	
