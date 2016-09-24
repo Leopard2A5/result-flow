@@ -16,6 +16,8 @@
 
 package de.perschon.resultflow;
 
+import java.util.function.Consumer;
+
 /**
  * The Result type is an alternative way of chaining together functions in a
  * functional programming style while hiding away error handling structures such as
@@ -54,6 +56,21 @@ public interface Result<V, E> {
 	public static <V, E> Result<V, E> err(final E error) {
 		return new Err<V, E>(error);
 	}
+	
+	/**
+	 * Calls the given {@link Consumer} with the contained value, if this is an Ok. If
+	 * this is an Err, the lambda is not called. In both cases andThen returns this.
+	 * 
+	 * @param lambda the {@link Consumer} to call.
+	 * @return this
+	 */
+	public default Result<V, E> andThen(final Consumer<V> lambda) {
+		if (isOk()) {
+			lambda.accept(getValue());
+		}
+		return this;
+	}
+	
 	
 	public static class Ok<V, E> implements Result<V, E> {
 		private final V value;
