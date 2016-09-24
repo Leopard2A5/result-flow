@@ -97,6 +97,7 @@ public interface Result<V, E> {
 	 * Otherwise returns this.
 	 * 
 	 * @param lambda The {@link Function} to be called with the value of this.
+	 * @param <U> The new value type.
 	 * @return see above.
 	 */
 	public default <U> Result<U, E> andThen(final Function<V, Result<U, E>> lambda) {
