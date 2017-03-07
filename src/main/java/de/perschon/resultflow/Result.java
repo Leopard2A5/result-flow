@@ -94,6 +94,21 @@ public interface Result<V, E> {
 	 * @return see above
 	 */
 	boolean isErr();
+
+	/**
+	 * Returns the contained value if this is an Ok value, otherwise throws a ResultException.
+	 * @return the contained value
+	 * @throws ResultException in case unwrap() is called on an Err value
+	 */
+	V unwrap() throws ResultException;
+
+	/**
+	 * Express the expectation that this object is an Ok value. If it's an Err value
+	 * instead, throw a ResultException with the given message.
+	 * @param message the message to pass to a potential ResultException
+	 * @throws ResultException if unwrap() is called on an Err value
+	 */
+	void expect(String message) throws ResultException;
 	
 	/**
 	 * If this is an Ok value, andThen() returns the result of the given {@link Function}.
@@ -148,93 +163,5 @@ public interface Result<V, E> {
 				return ret;
 			});
 	}
-	
-	/**
-	 * This class represents the Ok side of @{link Result}.
-	 * 
-	 * @param <V> The value type
-	 * @param <E> The error type
-	 */
-	class Ok<V, E> implements Result<V, E> {
-		private final V value;
-		
-		/**
-		 * Constructor.
-		 * @param value the value
-		 */
-		private Ok(final V value) {
-			super();
-			this.value = value;
-		}
 
-		@Override
-		public Optional<V> getValue() {
-			return Optional.of(value);
-		}
-
-		@Override
-		public Optional<E> getError() {
-			return Optional.empty();
-		}
-		
-		@Override
-		public boolean isOk() {
-			return true;
-		}
-
-		@Override
-		public boolean isErr() {
-			return false;
-		}
-		
-		@Override
-		public String toString() {
-			return String.format("Ok(%s)", value);
-		}
-	}
-	
-	/**
-	 * This class represents theErr side of @{link Result}.
-	 * 
-	 * @param <V> The value type
-	 * @param <E> The error type
-	 */
-	class Err<V, E> implements Result<V, E> {
-		private final E error;
-		
-		/**
-		 * Constructor.
-		 * @param error the error
-		 */
-		private Err(final E error) {
-			super();
-			this.error = error;
-		}
-		
-		@Override
-		public Optional<V> getValue() {
-			return Optional.empty();
-		}
-
-		@Override
-		public Optional<E> getError() {
-			return Optional.of(error);
-		}
-		
-		@Override
-		public boolean isOk() {
-			return false;
-		}
-
-		@Override
-		public boolean isErr() {
-			return true;
-		}
-		
-		@Override
-		public String toString() {
-			return String.format("Err(%s)", error);
-		}
-	}
-	
 }

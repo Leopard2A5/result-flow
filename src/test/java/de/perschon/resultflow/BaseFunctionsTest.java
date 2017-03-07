@@ -29,7 +29,7 @@ public class BaseFunctionsTest {
 	
 	@Test
 	public void okShouldReturnAnOk() {
-		assertThat(ok).isExactlyInstanceOf(Result.Ok.class);
+		assertThat(ok).isExactlyInstanceOf(Ok.class);
 	}
 	
 	@Test
@@ -54,7 +54,7 @@ public class BaseFunctionsTest {
 	
 	@Test
 	public void errShouldReturnAnOk() {
-		assertThat(err).isExactlyInstanceOf(Result.Err.class);
+		assertThat(err).isExactlyInstanceOf(Err.class);
 	}
 	
 	@Test
