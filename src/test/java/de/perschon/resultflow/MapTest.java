@@ -27,7 +27,7 @@ public class MapTest {
 	
 	@Test
 	public void mapShouldCallLambda() {
-		final Result<String, String> result = five.map(this::intToString);
+		final Result<String, String> result = five.map(it -> Integer.toString(it));
 		assertThat(result.getValue().get()).isEqualTo("5");
 	}
 	
@@ -42,10 +42,6 @@ public class MapTest {
 	public void mapShouldReturnThisIfItsAnErr() {
 		final Result<String, String> result = err.map(v -> "foo");
 		assertThat(result).isSameAs(err);
-	}
-	
-	private String intToString(final int input) {
-		return Integer.toString(input);
 	}
 
 }

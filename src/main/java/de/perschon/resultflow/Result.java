@@ -44,56 +44,56 @@ import java.util.function.Function;
  * @param <E> The error type of the Result.
  */
 public interface Result<V, E> {
-	
+
+	/**
+	 * Returns a new Ok instance containing the given value.
+	 *
+	 * @param value the value
+	 * @param <V> The type of the value
+	 * @param <E> The type of the error
+	 * @return see above
+	 */
+	static <V, E> Result<V, E> ok(final V value) {
+		return new Ok<V, E>(value);
+	}
+
+	/**
+	 * Returns a new Err instance containing the given error.
+	 *
+	 * @param error the error
+	 * @param <V> The type of the value
+	 * @param <E> The type of the error
+	 * @return see above
+	 */
+	static <V, E> Result<V, E> err(final E error) {
+		return new Err<V, E>(error);
+	}
+
 	/**
 	 * Returns the value of this instance as an {@link Optional}. Returns Optional.empty()
 	 * if this is an Err instance.
 	 * @return see above.
 	 */
-	public abstract Optional<V> getValue();
+	Optional<V> getValue();
 	
 	/**
 	 * Returns the error of this instance as an {@link Optional}. Returns Optional.empty()
 	 * if this is an Ok instance.
 	 * @return see above.
 	 */
-	public abstract Optional<E> getError();
+	Optional<E> getError();
 	
 	/**
 	 * Returns <code>true</code> if this instance represents an Ok value, false otherwise.
 	 * @return see above.
 	 */
-	public abstract boolean isOk();
+	boolean isOk();
 	
 	/**
 	 * Returns <code>true</code> if this instance represents an Err value, false otherwise.
 	 * @return see above
 	 */
-	public abstract boolean isErr();
-	
-	/**
-	 * Returns a new Ok instance containing the given value.
-	 * 
-	 * @param value the value
-	 * @param <V> The type of the value
-	 * @param <E> The type of the error
-	 * @return see above
-	 */
-	public static <V, E> Result<V, E> ok(final V value) {
-		return new Ok<V, E>(value);
-	}
-	
-	/**
-	 * Returns a new Err instance containing the given error.
-	 * 
-	 * @param error the error
-	 * @param <V> The type of the value
-	 * @param <E> The type of the error
-	 * @return see above
-	 */
-	public static <V, E> Result<V, E> err(final E error) {
-		return new Err<V, E>(error);
-	}
+	boolean isErr();
 	
 	/**
 	 * If this is an Ok value, andThen() returns the result of the given {@link Function}.
@@ -103,7 +103,7 @@ public interface Result<V, E> {
 	 * @param <U> The new value type.
 	 * @return see above.
 	 */
-	public default <U> Result<U, E> andThen(final Function<V, Result<U, E>> lambda) {
+	default <U> Result<U, E> andThen(final Function<V, Result<U, E>> lambda) {
 		return getValue()
 			.map(lambda::apply)
 			.orElseGet(() -> {
@@ -121,7 +121,7 @@ public interface Result<V, E> {
 	 * @param <U> The new value type.
 	 * @return see above.
 	 */
-	public default <U> Result<U, E> map(final Function<V, U> lambda) {
+	default <U> Result<U, E> map(final Function<V, U> lambda) {
 		return getValue()
 			.map(v -> Result.<U, E>ok(lambda.apply(v)))
 			.orElseGet(() -> {
@@ -139,7 +139,7 @@ public interface Result<V, E> {
 	 * @param <F>  The new error type.
      * @return see above
      */
-	public default <F> Result<V, F> mapErr(final Function<E, F> lambda) {
+	default <F> Result<V, F> mapErr(final Function<E, F> lambda) {
 		return getError()
 			.map(e -> Result.<V, F>err(lambda.apply(e)))
 			.orElseGet(() -> {
@@ -155,7 +155,7 @@ public interface Result<V, E> {
 	 * @param <V> The value type
 	 * @param <E> The error type
 	 */
-	public static class Ok<V, E> implements Result<V, E> {
+	class Ok<V, E> implements Result<V, E> {
 		private final V value;
 		
 		/**
@@ -199,7 +199,7 @@ public interface Result<V, E> {
 	 * @param <V> The value type
 	 * @param <E> The error type
 	 */
-	public static class Err<V, E> implements Result<V, E> {
+	class Err<V, E> implements Result<V, E> {
 		private final E error;
 		
 		/**
