@@ -19,7 +19,33 @@ limitations under the License.
 	<groupId>com.github.leopard2a5</groupId>
 	<artifactId>result-flow</artifactId>
 	<version>1.0.0</version>
-	
+	<packaging>jar</packaging>
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>Functional error handling library inspired by the Rust language.</description>
+	<url>https://github.com/Leopard2A5/result-flow</url>
+
+	<scm>
+		<connection>scm:git:git://github.com/Leopard2A5/result-flow.git</connection>
+		<developerConnection>scm:git:ssh://github.com:Leopard2A5/result-flow.git</developerConnection>
+		<url>http://github.com/Leopard2A5/result-flow/tree/master</url>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>René Perschon</name>
+			<email>rperschon85@gmail.com</email>
+			<organizationUrl>https://github.com/Leopard2A5</organizationUrl>
+		</developer>
+	</developers>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -72,6 +98,20 @@ limitations under the License.
 	               </execution>
 	           </executions>
 	       </plugin>
+		   <plugin>
+			   <groupId>org.apache.maven.plugins</groupId>
+			   <artifactId>maven-gpg-plugin</artifactId>
+			   <version>1.6</version>
+			   <executions>
+				   <execution>
+					   <id>sign-artifacts</id>
+					   <phase>verify</phase>
+					   <goals>
+						   <goal>sign</goal>
+					   </goals>
+				   </execution>
+			   </executions>
+		   </plugin>
 	   </plugins>
 	</build>
 </project>
