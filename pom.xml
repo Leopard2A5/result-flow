@@ -31,7 +31,7 @@ limitations under the License.
 
 	<scm>
 		<connection>scm:git:git://github.com/Leopard2A5/result-flow.git</connection>
-		<developerConnection>scm:git:ssh://github.com:Leopard2A5/result-flow.git</developerConnection>
+		<developerConnection>scm:git:https://github.com/Leopard2A5/result-flow.git</developerConnection>
 		<url>http://github.com/Leopard2A5/result-flow/tree/master</url>
 	</scm>
 
