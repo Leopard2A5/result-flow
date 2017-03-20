@@ -25,6 +25,10 @@ limitations under the License.
 	<description>Functional error handling library inspired by the Rust language.</description>
 	<url>https://github.com/Leopard2A5/result-flow</url>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<scm>
 		<connection>scm:git:git://github.com/Leopard2A5/result-flow.git</connection>
 		<developerConnection>scm:git:ssh://github.com:Leopard2A5/result-flow.git</developerConnection>
@@ -114,4 +118,15 @@ limitations under the License.
 		   </plugin>
 	   </plugins>
 	</build>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 </project>
